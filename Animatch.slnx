@@ -1,3 +1,7 @@
 <Solution>
   <Project Path="Animatch.Api/Animatch.Api.csproj" />
+  <Project Path="Animatch.Core/Animatch.Core.csproj" Id="a451401f-a847-42b0-82e9-f9239947bcca" />
+  <Project Path="Animatch.Domain/Animatch.Domain.csproj" Id="17daa00d-b8a1-4375-9794-5bf254674be2" />
+  <Project Path="Animatch.Infra/Animatch.Infrastructure.csproj" Id="a2d7dc13-8440-4fb6-92ed-3140ea92a226" />
+  <Project Path="Animatch.Security/Animatch.Security.csproj" Id="46c5860b-7273-49c6-b941-873570355712" />
 </Solution>
