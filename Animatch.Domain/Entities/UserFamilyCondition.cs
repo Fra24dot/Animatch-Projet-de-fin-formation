@@ -12,10 +12,11 @@ namespace Animatch.Domain.Entities
         public HousingType HousingType { get; set; }
         public int PeopleCount { get; set; }
         public bool HasChildren { get; set; }
-        public bool PetAllowed { get; set; }
+        public bool PetsAllowed { get; set; }
         public DateTime CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
 
-       
+
         public Guid UserId { get; set; }
         public User User { get; set; }
 

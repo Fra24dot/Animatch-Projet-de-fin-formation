@@ -11,7 +11,7 @@ namespace Animatch.Domain.Entities
         public string Name { get; set; }
         public int CreationYear { get; set; }
         public string CompanyNumber { get; set; }
-        public ShelterStatus Status { get; set; }
+        public ShelterStatus ShelterStatus { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
         public string PostalCode { get; set; }

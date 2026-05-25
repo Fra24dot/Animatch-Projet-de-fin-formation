@@ -24,8 +24,4 @@
     <ProjectReference Include="..\Animatch.Security\Animatch.Security.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Database\Configuration\" />
-  </ItemGroup>
-
 </Project>

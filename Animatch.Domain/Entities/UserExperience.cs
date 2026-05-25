@@ -11,7 +11,7 @@ namespace Animatch.Domain.Entities
         public bool HasAnimals { get; set; } = false;
         public int AnimalsCount { get; set; }
         public AnimalType AnimalType { get; set; }
-        public bool HasAlreadyAdopted { get; set; }
+        public bool AlreadyAdopted { get; set; }
         public bool AdoptionPermit { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }

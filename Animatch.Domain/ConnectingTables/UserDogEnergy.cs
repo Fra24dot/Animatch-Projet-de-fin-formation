@@ -8,10 +8,10 @@ namespace Animatch.Domain.ConnectingTables
     public class UserDogEnergy
     {
         public Guid UserId { get; set; }
-        public int DogEnenergyLevelId { get; set; }
+        public int EnergyLevelId { get; set; }
 
         // Navigation properties
         public User User { get; set; }
-        public DogEnergyLevel DogEnergyLevel { get; set; }
+        public EnergyLevel EnergyLevel { get; set; }
     }
 }

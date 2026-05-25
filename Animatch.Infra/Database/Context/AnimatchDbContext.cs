@@ -34,14 +34,14 @@ namespace Animatch.Infrastructure.Database.Context
         public DbSet<DogSizePreference> DogSizes { get; set; } = null!;
         public DbSet<DogAge> DogAges { get; set; } = null!;
         public DbSet<DogGenderPreference> DogGenders { get; set; } = null!;
-        public DbSet<DogEnergyLevel> DogEnergyLevels { get; set; } = null!;
+        public DbSet<Domain.Entities.EnergyLevel> DogEnergyLevels { get; set; } = null!;
 
         // Connecting tables
         public DbSet<DogCompatibility> DogCompatibilities { get; set; } = null!;
         public DbSet<DogPersonality> DogPersonalities { get; set; } = null!;
         public DbSet<DogSpecialNeeds> DogSpecialNeeds { get; set; } = null!;
         public DbSet<DogMedicalHistory> DogMedicalHistories { get; set; } = null!;
-        public DbSet<Media> Medias { get; set; } = null!;
+        public DbSet<DogMedia> DogMedias { get; set; } = null!;
         public DbSet<UserCompatibility> UserCompatibilities { get; set; } = null!;
         public DbSet<UserPersonality> UserPersonalities { get; set; } = null!;
         public DbSet<UserDogSize> UserDogSizes { get; set; } = null!;

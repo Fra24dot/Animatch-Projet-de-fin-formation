@@ -1,4 +1,5 @@
-﻿using Animatch.Domain.Enums;
+﻿using Animatch.Domain.ConnectingTables;
+using Animatch.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,13 +11,12 @@ namespace Animatch.Domain.Entities
         public Guid Id { get; set; }
         public string Name { get; set; }
         public Race Race { get; set; }
-
         public string Description { get; set; }
-        public Enums.DogGender Gender { get; set; }
+        public DogGender Gender { get; set; }
         public DogStatus Status { get; set; }
         public DogAgeRange AgeRange { get; set; }
-        public DogSizePreference Size { get; set; }
-        public EnergyLevel EnergyLevel { get; set; }
+        public DogSize Size { get; set; }
+        public Enums.EnergyLevel EnergyLevel { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
 
@@ -24,10 +24,10 @@ namespace Animatch.Domain.Entities
         public Guid ShelterId { get; set; }
 
         public Shelter Shelter { get; set; }
-        public ICollection<Media> Medias { get; set; }
-        public ICollection<SpecialNeeds> SpecialNeeds { get; set; }
-        public ICollection<Personality> Personalities { get; set; }
-        public ICollection<Compatibility> Compatibilities { get; set; }
-        public ICollection<MedicalHistory> MedicalHistories { get; set; }
+        public ICollection<DogMedia> DogMedias { get; set; }
+        public ICollection<DogSpecialNeeds> DogSpecialNeeds { get; set; }
+        public ICollection<DogPersonality> DogPersonalities { get; set; }
+        public ICollection<DogCompatibility> DogCompatibilities { get; set; }
+        public ICollection<DogMedicalHistory> DogMedicalHistories { get; set; }
     }
 }

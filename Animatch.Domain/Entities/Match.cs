@@ -12,7 +12,7 @@ namespace Animatch.Domain.Entities
 
         public MatchStatus Status{ get; set; }
 
-        public DateTime? ShelterLikedAt { get; set; }
+        public DateTime? ShelterResponseAt { get; set; }
         public bool ConversationEnabled { get; set; }
         public DateTime CreatedAt { get; set; }
 
