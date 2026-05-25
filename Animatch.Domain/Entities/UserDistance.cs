@@ -9,10 +9,11 @@ namespace Animatch.Domain.Entities
         public int Id { get; set; }
 
         public int MaxDistance { get; set; }
-        
-        // Navigation property
 
         public Guid UserId { get; set; }
 
+        
+
+        public User User { get; set; }
     }
 }

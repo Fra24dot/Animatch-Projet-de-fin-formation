@@ -15,8 +15,9 @@ namespace Animatch.Domain.Entities
         public bool PetAllowed { get; set; }
         public DateTime CreatedAt { get; set; }
 
-        // Navigation property
+       
         public Guid UserId { get; set; }
+        public User User { get; set; }
 
     }
 }

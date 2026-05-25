@@ -4,17 +4,10 @@ using System.Text;
 
 namespace Animatch.Domain.Entities
 {
-    public class Admin
-    { 
+   public class Compatibility
+    {
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public DateTime CreatedAt { get; set; }
-
-        
-
-        public Guid UserId { get; set; }
-
-        public User User { get; set; }
     }
 }
