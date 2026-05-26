@@ -10,13 +10,13 @@ namespace Animatch.Domain.Entities
         public Guid Id { get; set; }
         public string Name { get; set; } = null!;
         public int CreationYear { get; set; }
-        public string CompanyNumber { get; set; }
+        public string CompanyNumber { get; set; } = null!;
         public ShelterStatus ShelterStatus { get; set; }
-        public string Address { get; set; }
-        public string City { get; set; }
-        public string PostalCode { get; set; }
+        public string Address { get; set; } = null!;
+        public string City { get; set; } = null!;
+        public string PostalCode { get; set; } = null!;
         public string? ShelterAgreementProof { get; set; }
-        public string PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; } = null!;
         public bool IsVerified { get; set; }
         public DateTime? VerifiedAt { get; set; }
 
