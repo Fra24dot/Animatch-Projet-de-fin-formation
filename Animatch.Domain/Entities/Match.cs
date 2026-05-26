@@ -24,8 +24,8 @@ namespace Animatch.Domain.Entities
         public Guid DogId { get; set; }
 
 
-        public User User { get; set; }
-        public Dog Dog { get; set; }
+        public User User { get; set; } = null!;
+        public Dog Dog { get; set; } = null!;
 
     }
 }
