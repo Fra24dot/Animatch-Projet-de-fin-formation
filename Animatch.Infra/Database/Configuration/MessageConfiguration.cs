@@ -40,5 +40,5 @@ namespace Animatch.Infrastructure.Database.Configuration
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
-    }
-}
+ }
+
