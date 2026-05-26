@@ -11,7 +11,7 @@ namespace Animatch.Domain.ConnectingTables
         public Guid DogId { get; set; }
         public int MediaId { get; set; }
 
-        public Dog Dog { get; set; }
-        public Media Media { get; set; }
+        public Dog Dog { get; set; } = null!;
+        public Media Media { get; set; } = null!;
     }
 }

@@ -11,8 +11,8 @@ namespace Animatch.Domain.ConnectingTables
         public int MedicalHistoryId { get; set; }
 
 
-        public Dog Dog { get; set; }
-        public MedicalHistory MedicalHistory { get; set; }
+        public Dog Dog { get; set; } = null!;
+        public MedicalHistory MedicalHistory { get; set; } = null!;
 
     }
 }

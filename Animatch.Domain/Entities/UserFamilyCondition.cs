@@ -18,7 +18,7 @@ namespace Animatch.Domain.Entities
 
 
         public Guid UserId { get; set; }
-        public User User { get; set; }
+        public User User { get; set; } = null!;
 
     }
 }
