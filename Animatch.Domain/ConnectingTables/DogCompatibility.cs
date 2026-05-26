@@ -11,7 +11,7 @@ namespace Animatch.Domain.ConnectingTables
         public int CompatibilityId { get; set; }
 
 
-        public Dog Dog { get; set; }
-        public Compatibility Compatibility { get; set; }
+        public Dog Dog { get; set; } = null!;
+        public Compatibility Compatibility { get; set; } = null!;
     }
 }

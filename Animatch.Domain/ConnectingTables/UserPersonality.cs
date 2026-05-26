@@ -11,7 +11,7 @@ namespace Animatch.Domain.ConnectingTables
         public int PersonalityId { get; set; }
 
 
-        public User User { get; set; }
-        public Personality Personality { get; set; }
+        public User User { get; set; } = null!;
+        public Personality Personality { get; set; } = null!;
     }
 }

@@ -11,7 +11,7 @@ namespace Animatch.Domain.ConnectingTables
         public int DogSizeId { get; set; }
 
         // Navigation properties
-        public User User { get; set; }
-        public DogSizePreference DogSize { get; set; }
+        public User User { get; set; } = null!;
+        public DogSizePreference DogSize { get; set; } = null!;
     }
 }

@@ -10,7 +10,7 @@ namespace Animatch.Domain.ConnectingTables
         public Guid UserId { get; set; }
         public int RaceId { get; set; }
 
-        public User User { get; set; }
-        public DogRacePreference DogRace { get; set; }
+        public User User { get; set; } = null!;
+        public DogRacePreference DogRace { get; set; } = null!;
     }
 }

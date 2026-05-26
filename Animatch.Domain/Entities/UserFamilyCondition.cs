@@ -8,7 +8,7 @@ namespace Animatch.Domain.Entities
     public class UserFamilyCondition
     {
         public int Id { get; set; }
-        public string City { get; set; }
+        public string City { get; set; } = null!;
         public HousingType HousingType { get; set; }
         public int PeopleCount { get; set; }
         public bool HasChildren { get; set; }
