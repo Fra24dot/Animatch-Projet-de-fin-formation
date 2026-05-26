@@ -12,6 +12,6 @@ namespace Animatch.Domain.ConnectingTables
 
 
         public User User { get; set; } = null!;
-        public Compatibility Compatibility { get; set; }
+        public Compatibility Compatibility { get; set; } = null!;
     }
 }

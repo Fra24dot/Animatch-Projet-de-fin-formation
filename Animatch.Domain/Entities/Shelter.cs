@@ -8,7 +8,7 @@ namespace Animatch.Domain.Entities
     public class Shelter
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
         public int CreationYear { get; set; }
         public string CompanyNumber { get; set; }
         public ShelterStatus ShelterStatus { get; set; }

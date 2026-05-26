@@ -11,8 +11,8 @@ namespace Animatch.Domain.ConnectingTables
         public int SpecialNeedsId { get; set; }
 
 
-        public Dog Dog { get; set; }
-        public SpecialNeeds SpecialNeeds { get; set; }
+        public Dog Dog { get; set; } = null!;
+        public SpecialNeeds SpecialNeeds { get; set; } = null!;
 
 
     }

@@ -9,9 +9,9 @@ namespace Animatch.Domain.Entities
     public class Dog
     {
         public Guid Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
         public Race Race { get; set; }
-        public string Description { get; set; }
+        public string Description { get; set; } = null!;
         public DogGender Gender { get; set; }
         public DogStatus Status { get; set; }
         public DogAgeRange AgeRange { get; set; }
@@ -23,7 +23,7 @@ namespace Animatch.Domain.Entities
         
         public Guid ShelterId { get; set; }
 
-        public Shelter Shelter { get; set; }
+        public Shelter Shelter { get; set; } = null!;
         public ICollection<DogMedia> DogMedias { get; set; }
         public ICollection<DogSpecialNeeds> DogSpecialNeeds { get; set; }
         public ICollection<DogPersonality> DogPersonalities { get; set; }
