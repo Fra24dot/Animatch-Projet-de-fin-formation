@@ -17,6 +17,17 @@ namespace Animatch.Infrastructure.Database.Configuration
                 .IsRequired()
                 .HasMaxLength(100);
 
+            builder.Property(s => s.Email)
+                .IsRequired()
+                .HasMaxLength(250);
+
+            builder.HasIndex(s => s.Email)
+                .IsUnique();
+
+            builder.Property(s => s.Password)
+                .IsRequired()
+                .HasMaxLength(100);
+
             builder.Property(s => s.CompanyNumber)
                 .IsRequired()
                 .HasMaxLength(50);

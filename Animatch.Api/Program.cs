@@ -3,9 +3,11 @@ using Animatch.Api.Scalar;
 using Animatch.Core.Extensions;
 using Animatch.Infrastructure.Extensions;
 using Animatch.Security.Extensions;
+using Animatch.Security.Services.Tools;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 builder.Services.AddSecurityServices(builder.Configuration);
 

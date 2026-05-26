@@ -1,4 +1,6 @@
-﻿using Animatch.Infrastructure.Database.Context;
+﻿using Animatch.Core.Interfaces.Repositories.Data;
+using Animatch.Infrastructure.Database.Context;
+using Animatch.Infrastructure.Repositories.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +18,8 @@ namespace Animatch.Infrastructure.Extensions
             var connectionString = configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<AnimatchDbContext>(options => options.UseSqlServer(connectionString));
 
+
+            services.AddScoped<IUserRepository, UserRepository>();
         }
     }
 }

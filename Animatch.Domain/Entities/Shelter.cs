@@ -9,6 +9,8 @@ namespace Animatch.Domain.Entities
     {
         public Guid Id { get; set; }
         public string Name { get; set; } = null!;
+        public string Email { get; set; } = null!;
+        public string Password { get; set; } = null!;
         public int CreationYear { get; set; }
         public string CompanyNumber { get; set; } = null!;
         public ShelterStatus ShelterStatus { get; set; }
