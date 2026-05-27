@@ -18,10 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Animatch.Core\Animatch.Core.csproj" />
     <ProjectReference Include="..\Animatch.Infra\Animatch.Infrastructure.csproj" />
   </ItemGroup>
