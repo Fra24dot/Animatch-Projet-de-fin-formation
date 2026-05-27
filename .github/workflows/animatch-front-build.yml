@@ -3,8 +3,12 @@ name: CICD Animatch Front
 on:
   push:
     branches: [main, develop, "feature/**", "features/**"]
+    paths:
+      - "Animatch-Front/**"
   pull_request:
     branches: [main, develop]
+    paths:
+      - "Animatch-Front/**"
 
 jobs:
   build:
