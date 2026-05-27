@@ -1,4 +1,6 @@
-﻿using Animatch.Core.Interfaces.Services.Tools;
+﻿using Animatch.Core.Interfaces.Services.Auth;
+using Animatch.Core.Interfaces.Services.Tools;
+using Animatch.Security.Services.Auth;
 using Animatch.Security.Services.Tools;
 using Animatch.Security.Settings;
 using Microsoft.Extensions.Configuration;
@@ -22,7 +24,8 @@ namespace Animatch.Security.Extensions
 
             services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IPasswordHacherService, PasswordHacherService>();
-            
+            services.AddScoped<IAuthService, AuthService>();
+
         }
     }
 }

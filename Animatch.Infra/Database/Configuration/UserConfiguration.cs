@@ -64,8 +64,7 @@ namespace Animatch.Infrastructure.Database.Configuration
                     FirstName = "Super",
                     LastName = "Admin",
                     Email = "admin@animatch.be",
-                    Password = "HASHED_PASSWORD_HERE", //TODO: Replace with actual hashed password
-                    AccountType = AccountType.Admin,
+                    Password = "wNPUpqDi7HH1EjwwPggiRrnUlZUlJlwBUu25Sh9rqvJsfKkMN5lFa5/bcHE2yrqw", 
                     Gender = UserGender.Other,
                     BirthDate = new DateTime(1990, 1, 1),
                     AccountCompleted = true,
