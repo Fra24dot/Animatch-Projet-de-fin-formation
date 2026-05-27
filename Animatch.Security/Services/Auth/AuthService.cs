@@ -29,6 +29,20 @@ namespace Animatch.Security.Services.Auth
         public async Task<User> RegisterUserAsync(string firstName, string lastName, string email, 
             string password, UserGender gender, DateTime birthDate)
         {
+            var today = DateTime.UtcNow.Date;
+            var age = today.Year - birthDate.Year;
+
+            // Si l'anniversaire n'est pas encore passé cette année on retire un an
+            if (birthDate.Date > today.AddYears(-age))
+            {
+                age--;
+            }
+
+            if (age < 18)
+            {
+                throw new InvalidOperationException("You must be at least 18 years old to register.");
+            }
+
             if (await userRepository.EmailExistsAsync(email))
                 throw new InvalidOperationException("Email already exists");
 
