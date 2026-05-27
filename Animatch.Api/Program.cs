@@ -1,4 +1,5 @@
 using Animatch.Api.Extensions;
+using Animatch.Api.Middlewares;
 using Animatch.Api.Scalar;
 using Animatch.Core.Extensions;
 using Animatch.Infrastructure.Extensions;
@@ -36,6 +37,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseCors("CorsPolicy");
 
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 
