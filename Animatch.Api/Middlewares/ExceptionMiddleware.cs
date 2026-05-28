@@ -19,7 +19,7 @@
             }
             catch (Exception ex)
             {
-                // Toute autre exception non gérée → 500
+                // Toute autre exception non gérée : 500
                 await HandleExceptionAsync(context, "An unexpected error occurred", StatusCodes.Status500InternalServerError);
             }
         }
