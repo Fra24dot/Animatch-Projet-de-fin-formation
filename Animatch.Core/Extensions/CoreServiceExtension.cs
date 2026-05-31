@@ -1,4 +1,5 @@
-﻿using Animatch.Core.Interfaces.Services.Tools;
+﻿using Animatch.Core.Interfaces.Services.Auth;
+using Animatch.Core.Interfaces.Services.Tools;
 using Animatch.Core.Services;
 using Animatch.Core.Settings;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +20,7 @@ namespace Animatch.Core.Extensions
             services.AddSingleton(emailSettings);
 
             services.AddScoped<IEmailService, EmailService>();
+            
         }
 
     }

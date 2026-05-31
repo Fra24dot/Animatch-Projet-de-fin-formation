@@ -13,6 +13,6 @@ namespace Animatch.Core.Interfaces.Services.Auth
 
         Task<User> RegisterUserAsync(string firstName, string lastName, string email, string password, UserGender gender, DateTime birthDate);
 
-        Task<Shelter> RegisterShelterAsync(string name, string email, string password, string companyNumber, string phoneNumber, string address, string city, string postalCode);
+        Task<Shelter> RegisterShelterAsync(string name, string email, string password, string companyNumber, string phoneNumber, string address, string city, string postalCode, int creationYear, string shelterAgreementProof);
     }
 }

@@ -20,6 +20,8 @@ namespace Animatch.Infrastructure.Extensions
 
 
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IShelterRepository, ShelterRepository>();
+
         }
     }
 }

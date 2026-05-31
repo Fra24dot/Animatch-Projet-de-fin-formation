@@ -17,7 +17,7 @@ namespace Animatch.Domain.Entities
         public string Address { get; set; } = null!;
         public string City { get; set; } = null!;
         public string PostalCode { get; set; } = null!;
-        public string? ShelterAgreementProof { get; set; }
+        public string ShelterAgreementProof { get; set; }
         public string PhoneNumber { get; set; } = null!;
         public bool IsVerified { get; set; }
         public DateTime? VerifiedAt { get; set; }
