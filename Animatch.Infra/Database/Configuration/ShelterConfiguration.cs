@@ -51,6 +51,9 @@ namespace Animatch.Infrastructure.Database.Configuration
             builder.Property(s => s.ShelterStatus)
                 .IsRequired();
 
+            builder.Property(s => s.CreationYear)
+            .IsRequired();
+
             builder.Property(s => s.IsActive)
                 .IsRequired()
                 .HasDefaultValue(false);
@@ -64,7 +67,6 @@ namespace Animatch.Infrastructure.Database.Configuration
 
             builder.Property(s => s.UpdatedAt);
             builder.Property(s => s.VerifiedAt);
-            builder.Property(s => s.ShelterAgreementProof);
             builder.Property(s => s.Latitude);
             builder.Property(s => s.Longitude);
             

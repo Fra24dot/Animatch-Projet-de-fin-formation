@@ -1,7 +1,4 @@
 ﻿using Animatch.Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Animatch.Domain.Entities
 {
@@ -17,7 +14,6 @@ namespace Animatch.Domain.Entities
         public string Address { get; set; } = null!;
         public string City { get; set; } = null!;
         public string PostalCode { get; set; } = null!;
-        public string ShelterAgreementProof { get; set; }
         public string PhoneNumber { get; set; } = null!;
         public bool IsVerified { get; set; }
         public DateTime? VerifiedAt { get; set; }

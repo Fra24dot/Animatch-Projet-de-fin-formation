@@ -64,8 +64,7 @@ namespace Animatch.Security.Services.Auth
         }
 
         public async Task<Shelter> RegisterShelterAsync(string name, string email, string password, 
-            string companyNumber, string phoneNumber, string address, string city, string postalCode, int creationYear,              
-            string shelterAgreementProof)
+            string companyNumber, string phoneNumber, string address, string city, string postalCode, int creationYear)
         {
             if (await shelterRepository.EmailExistsAsync(email))
                 throw new InvalidOperationException("Email already exists");
@@ -82,7 +81,6 @@ namespace Animatch.Security.Services.Auth
                 City = city,
                 PostalCode = postalCode,
                 CreationYear = creationYear,                   
-                ShelterAgreementProof = shelterAgreementProof,
                 ShelterStatus = ShelterStatus.Pending,
                 IsVerified = false,
                 IsActive = false,

@@ -48,8 +48,7 @@ namespace Animatch.Api.Controllers
                 dto.Address,
                 dto.City,
                 dto.PostalCode,
-                dto.CreationYear,            
-                dto.ShelterAgreementProof);
+                dto.CreationYear);
 
             return CreatedAtAction(nameof(RegisterShelter), shelter.ToRegisterResponseDto());
         }
