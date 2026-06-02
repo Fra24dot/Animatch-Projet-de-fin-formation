@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Animatch.Core.Services
+namespace Animatch.Core.Services.Tools
 {
     public class EmailService(EmailSettings _settings) : IEmailService
     {

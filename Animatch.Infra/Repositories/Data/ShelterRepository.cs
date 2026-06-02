@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Animatch.Infrastructure.Repositories.Data
 {
-    internal class ShelterRepository(AnimatchDbContext animatchDbContext) : IShelterRepository
+    public class ShelterRepository(AnimatchDbContext animatchDbContext) : IShelterRepository
     {
         public async Task<Shelter> CreateAsync(Shelter shelter)
         {

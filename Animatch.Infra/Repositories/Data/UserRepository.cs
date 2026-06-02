@@ -10,6 +10,12 @@ namespace Animatch.Infrastructure.Repositories.Data
 {
     public class UserRepository(AnimatchDbContext animatchDbContext) : IUserRepository
     {
+
+        public async Task<User?> GetByIdAsync(Guid id)
+        {
+            return await animatchDbContext.Users.FindAsync(id);
+
+        }
         public async Task<User> CreateAsync(User user)
         {
             if(user is null) return null;

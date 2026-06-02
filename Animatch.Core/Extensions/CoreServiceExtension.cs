@@ -1,6 +1,6 @@
 ﻿using Animatch.Core.Interfaces.Services.Auth;
 using Animatch.Core.Interfaces.Services.Tools;
-using Animatch.Core.Services;
+using Animatch.Core.Services.Tools;
 using Animatch.Core.Settings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
