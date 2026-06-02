@@ -3,8 +3,12 @@ name: CICD Animatch Back
 on:
   push:
     branches: [main, develop, "feature/**", "features/**"]
+    paths:
+      - "Animatch/**"
   pull_request:
     branches: [main, develop]
+    paths:
+      - "Animatch/**"
 
 jobs:
   build:
