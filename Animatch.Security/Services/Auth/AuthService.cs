@@ -20,9 +20,27 @@ namespace Animatch.Security.Services.Auth
         {
             var user = await userRepository.GetByEmailAsync(email);
 
-            if (user == null || !passwordHacher.VerifyPassword(password, user.Password)) 
-                throw new UnauthorizedAccessException("Invalid credentials");
-            
+            // Vérification des identifiants (si l'user n'existe pas ou mdp incorrect)
+            if (user == null || !passwordHacher.VerifyPassword(password, user.Password))
+                throw new UnauthorizedAccessException("Identifiants invalides.");
+
+            // Si c'est un compte de type "Shelter", on doit vérifier s'il est validé
+            if (user.AccountType.ToString() == "Shelter" || user.AccountType.ToString() == "shelter")
+            {
+                // On va chercher ses informations de validation dans la table shelter via son email (ou userId si tu as configuré ainsi)
+                var shelter = await shelterRepository.GetByEmailAsync(email);
+
+                if (shelter != null)
+                {
+                    // 🛑 RÈGLE : Si le refuge n'est pas vérifié ou pas actif, on bloque la connexion
+                    if (!shelter.IsVerified || !shelter.IsActive)
+                    {
+                        throw new InvalidOperationException("Votre compte refuge est en attente de validation par un administrateur.");
+                    }
+                }
+            }
+
+            // Si c'est un adoptant, un admin, ou un refuge validé, on retourne le User !
             return user;
         }
 

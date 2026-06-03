@@ -10,6 +10,27 @@ namespace Animatch.Infrastructure.Repositories.Data
 {
     public class ShelterRepository(AnimatchDbContext animatchDbContext) : IShelterRepository
     {
+        public async Task<IEnumerable<Shelter>> GetPendingSheltersAsync()
+        {
+            
+            return await animatchDbContext.Shelters
+                .Where(s => !s.IsVerified)
+                .ToListAsync();
+        }
+
+        public async Task<Shelter?> GetByIdAsync(Guid id)
+        {
+            return await animatchDbContext.Shelters.FindAsync(id);
+        }
+
+        public async Task<Shelter> UpdateAsync(Shelter shelter)
+        {
+            animatchDbContext.Shelters.Update(shelter);
+            await animatchDbContext.SaveChangesAsync();
+            return shelter;
+        }
+
+
         public async Task<Shelter> CreateAsync(Shelter shelter)
         {
             if (shelter is null) return null;

@@ -23,7 +23,8 @@ namespace Animatch.Core.Extensions
 
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IUserProfileService, UserProfileService>();
-            
+            services.AddScoped<IAdminService, AdminService>();
+
         }
 
     }
