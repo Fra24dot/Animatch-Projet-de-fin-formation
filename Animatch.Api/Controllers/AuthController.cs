@@ -17,9 +17,27 @@ namespace Animatch.Api.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto dto)
         {
-            var user = await authService.LoginAsync(dto.Email, dto.Password);
-            var token = jwtService.GenerateToken(user);
-            return Ok(user.ToLoginResponseDto(token));
+            try
+            {
+                // Appel du service (qui vérifie les identifiants et le statut du shelter)
+                var user = await authService.LoginAsync(dto.Email, dto.Password);
+
+                // Génération du token si tout est OK
+                var token = jwtService.GenerateToken(user);
+
+                
+                return Ok(user.ToLoginResponseDto(token));
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                // Renvoie un 401 si le mot de passe ou l'email est faux
+                return Unauthorized(new { message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                //  Renvoie un 400 avec le message personnalisé pour le shelter non validé !
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpPost("register/user")]
@@ -50,7 +68,7 @@ namespace Animatch.Api.Controllers
                 dto.PostalCode,
                 dto.CreationYear);
 
-            return CreatedAtAction(nameof(RegisterShelter), shelter.ToRegisterResponseDto());
+            return CreatedAtAction(null, null, shelter.ToRegisterResponseDto());
         }
     }
 }
