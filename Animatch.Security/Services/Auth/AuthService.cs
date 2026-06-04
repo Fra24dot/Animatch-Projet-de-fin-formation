@@ -32,7 +32,7 @@ namespace Animatch.Security.Services.Auth
 
                 if (shelter != null)
                 {
-                    // 🛑 RÈGLE : Si le refuge n'est pas vérifié ou pas actif, on bloque la connexion
+                    // Si le refuge n'est pas vérifié ou pas actif, on bloque la connexion
                     if (!shelter.IsVerified || !shelter.IsActive)
                     {
                         throw new InvalidOperationException("Votre compte refuge est en attente de validation par un administrateur.");
@@ -86,6 +86,17 @@ namespace Animatch.Security.Services.Auth
         {
             if (await shelterRepository.EmailExistsAsync(email))
                 throw new InvalidOperationException("Email already exists");
+
+            var userConnection = new User
+            {
+                Id = Guid.NewGuid(),
+                Email = email,
+                Password = passwordHacher.HachPassword(password), 
+                AccountType = AccountType.Shelter, 
+                CreatedAt = DateTime.UtcNow,
+                AccountCompleted = true
+            };
+            await userRepository.CreateAsync(userConnection);
 
             var shelter = new Shelter
             {
