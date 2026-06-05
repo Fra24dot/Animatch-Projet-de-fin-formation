@@ -9,5 +9,6 @@ namespace Animatch.Core.Interfaces.Services.Data
     {
         Task<IEnumerable<Shelter>> GetPendingSheltersAsync();
         Task<bool> ApproveShelterAsync(Guid shelterId);
+        Task<bool> RejectShelterAsync(Guid shelterId);
     }
 }
