@@ -7,7 +7,7 @@ namespace Animatch.Domain.Enums
     public enum AnimalType
     {
         Dog,
-        Dat,
+        Cat,
         Other
     }
 }

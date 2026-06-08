@@ -17,11 +17,9 @@ namespace Animatch.Infrastructure.Database.Configuration
             builder.HasKey(u => u.Id);
 
             builder.Property(u => u.FirstName)
-                .IsRequired()
                 .HasMaxLength(50);
 
             builder.Property(u => u.LastName)
-                .IsRequired()
                 .HasMaxLength(50);
 
             builder.Property(u => u.Email)
@@ -38,11 +36,9 @@ namespace Animatch.Infrastructure.Database.Configuration
             builder.Property(u => u.AccountType)
                 .IsRequired();
 
-            builder.Property(u => u.Gender)
-                .IsRequired();
+            builder.Property(u => u.Gender);
 
-            builder.Property(u => u.BirthDate)
-                .IsRequired();
+            builder.Property(u => u.BirthDate);
 
             builder.Property(u => u.AccountCompleted)
                 .IsRequired()
@@ -66,6 +62,7 @@ namespace Animatch.Infrastructure.Database.Configuration
                     Email = "admin@animatch.be",
                     Password = "wNPUpqDi7HH1EjwwPggiRrnUlZUlJlwBUu25Sh9rqvJsfKkMN5lFa5/bcHE2yrqw", 
                     Gender = UserGender.Other,
+                    AccountType = AccountType.Admin,
                     BirthDate = new DateTime(1990, 1, 1),
                     AccountCompleted = true,
                     CreatedAt = new DateTime(2026, 1, 1)

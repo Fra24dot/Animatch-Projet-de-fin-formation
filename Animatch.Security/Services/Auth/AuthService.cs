@@ -20,27 +20,35 @@ namespace Animatch.Security.Services.Auth
         {
             var user = await userRepository.GetByEmailAsync(email);
 
-            // Vérification des identifiants (si l'user n'existe pas ou mdp incorrect)
+            // Vérification des identifiants
             if (user == null || !passwordHacher.VerifyPassword(password, user.Password))
                 throw new UnauthorizedAccessException("Identifiants invalides.");
 
-            // Si c'est un compte de type "Shelter", on doit vérifier s'il est validé
-            if (user.AccountType.ToString() == "Shelter" || user.AccountType.ToString() == "shelter")
+            // Si c'est un compte de type "Shelter"
+            // StringComparison pour éviter de dupliquer la condition avec "Shelter" || "shelter"
+            if (string.Equals(user.AccountType.ToString(), "Shelter", StringComparison.OrdinalIgnoreCase))
             {
-                // On va chercher ses informations de validation dans la table shelter via son email (ou userId si tu as configuré ainsi)
                 var shelter = await shelterRepository.GetByEmailAsync(email);
 
                 if (shelter != null)
                 {
-                    // Si le refuge n'est pas vérifié ou pas actif, on bloque la connexion
-                    if (!shelter.IsVerified || !shelter.IsActive)
+                    // Le refuge a été rejeté par l'admin
+                    if (shelter.ShelterStatus == ShelterStatus.Rejected)
                     {
-                        throw new InvalidOperationException("Votre compte refuge est en attente de validation par un administrateur.");
+                        throw new InvalidOperationException("Votre demande d'inscription a été rejetée par l'administrateur.");
                     }
+
+                    // Le refuge est toujours en attente (Pending)
+                    if (shelter.ShelterStatus == ShelterStatus.Pending)
+                    {
+                        throw new InvalidOperationException("Votre compte refuge est en attente de validation par un administrateur. Patience ! 🐾");
+                    }
+
+                    
                 }
             }
 
-            // Si c'est un adoptant, un admin, ou un refuge validé, on retourne le User !
+            
             return user;
         }
 
