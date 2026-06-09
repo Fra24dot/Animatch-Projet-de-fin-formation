@@ -24,7 +24,8 @@ namespace Animatch.Core.Extensions
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IUserProfileService, UserProfileService>();
             services.AddScoped<IAdminService, AdminService>();
-
+            services.AddScoped<IShelterDogService, ShelterDogService>();
+            services.AddScoped<IAzureBlobService, AzureBlobService>();
         }
 
     }

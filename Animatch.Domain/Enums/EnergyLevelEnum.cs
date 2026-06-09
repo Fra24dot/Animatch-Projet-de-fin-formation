@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Animatch.Domain.Enums
 {
-    public enum EnergyLevel
+    public enum EnergyLevelEnum
     {
         Low,
         Medium,

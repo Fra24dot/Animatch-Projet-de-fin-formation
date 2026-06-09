@@ -36,7 +36,7 @@ namespace Animatch.Infrastructure.Database.Configuration
             builder.Property(d => d.Race)
                 .IsRequired();
 
-            builder.Property(d => d.EnergyLevel)
+            builder.Property(d => d.EnergyLevelEnum)
                 .IsRequired();
 
             builder.Property(d => d.CreatedAt)
