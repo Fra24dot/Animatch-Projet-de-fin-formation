@@ -13,10 +13,10 @@ namespace Animatch.Domain.Entities
         public Race Race { get; set; }
         public string Description { get; set; } = null!;
         public DogGender Gender { get; set; }
-        public DogStatus Status { get; set; }
+        public DogStatus Status { get; set; } = DogStatus.Available;
         public DogAgeRange AgeRange { get; set; }
         public DogSize Size { get; set; }
-        public Enums.EnergyLevel EnergyLevel { get; set; }
+        public EnergyLevelEnum EnergyLevelEnum { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
 
