@@ -12,30 +12,32 @@ namespace Animatch.Security.Services.Tools
 {
     public class JwtService(IConfiguration configuration) : IJwtService
     {
-        public string GenerateToken(User user)
+        public string GenerateToken(User user, Guid? shelterId = null)
         {
 
-            //On récupère la config JWT depuis appsettings.json ou User Secrets.
             var jwtSettings = configuration.GetSection("JwtSettings");
             var secretKey = jwtSettings["SecretKey"]!;
-
-            //On calcule la date d'expiration du token (heure actuelle + X minutes).
             var expiration = DateTime.UtcNow.AddMinutes(int.Parse(jwtSettings["ExpirationMinutes"] ?? "30"));
 
+            var claims = new List<Claim>
+    {
+        new Claim(JwtRegisteredClaimNames.Email, user.Email),
+        new Claim("accountType", user.AccountType.ToString())
+    };
 
-
-            var claims = new[]
+            // 🌟 PLUS DE CS1061 ! On utilise directement le paramètre shelterId passé par le service d'auth
+            if (user.AccountType.ToString() == "Shelter" && shelterId.HasValue)
             {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-            new Claim(JwtRegisteredClaimNames.Email, user.Email),
-            new Claim("accountType", user.AccountType.ToString())
-        };
-            //On crée une clé cryptographique avec ta clé secrète,
-            //puis on définit l'algorithme de signature (HMAC SHA256).
+                claims.Add(new Claim(JwtRegisteredClaimNames.Sub, shelterId.Value.ToString()));
+            }
+            else
+            {
+                claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()));
+            }
+
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            //Assemblage du token
             var token = new JwtSecurityToken(
                 issuer: jwtSettings["Issuer"],
                 audience: jwtSettings["Audience"],
@@ -44,9 +46,7 @@ namespace Animatch.Security.Services.Tools
                 signingCredentials: credentials
             );
 
-            //On convertit le token en string JWT qu'on retourne au client 
             return new JwtSecurityTokenHandler().WriteToken(token);
-
         }
     }
 }

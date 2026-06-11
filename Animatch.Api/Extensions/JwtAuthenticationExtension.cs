@@ -30,7 +30,9 @@ namespace Animatch.Api.Extensions
                         IssuerSigningKey = new SymmetricSecurityKey( // Clef de chiffrement symétrique utilisée pour valider la signature du token (la même clef pour signer ET vérifier)
                             Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]!) // Conversion de la chaîne de caractères en tableau d'octets (UTF8)
                         ),
-                        ClockSkew = TimeSpan.Zero // Pas de tolérance sur l'expiration du token (par défaut: 5 minutes)
+                        ClockSkew = TimeSpan.Zero, // Pas de tolérance sur l'expiration du token (par défaut: 5 minutes)
+
+                        RoleClaimType = "accountType"
                     };
                 });
         }

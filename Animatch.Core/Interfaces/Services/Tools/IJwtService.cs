@@ -7,7 +7,7 @@ namespace Animatch.Core.Interfaces.Services.Tools
 {
     public interface IJwtService
     {
-        string GenerateToken(User user);
+        string GenerateToken(User user, Guid? shelterId = null);
 
     }
 }

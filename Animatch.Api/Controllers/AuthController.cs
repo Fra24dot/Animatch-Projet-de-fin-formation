@@ -3,6 +3,8 @@ using Animatch.Api.Dtos.Response;
 using Animatch.Api.Mappers;
 using Animatch.Core.Interfaces.Services.Auth;
 using Animatch.Core.Interfaces.Services.Tools;
+using Animatch.Security.Services.Auth;
+using Animatch.Security.Services.Tools;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,23 +21,16 @@ namespace Animatch.Api.Controllers
         {
             try
             {
-                // Appel du service (qui vérifie les identifiants et le statut du shelter)
-                var user = await authService.LoginAsync(dto.Email, dto.Password);
+                // 🌟 CORRECTION : On utilise 'authService' (sans le '_')
+                var (user, shelterId) = await authService.LoginAsync(dto.Email, dto.Password);
 
-                // Génération du token si tout est OK
-                var token = jwtService.GenerateToken(user);
+                // 🌟 CORRECTION : On utilise 'jwtService' (sans le '_')
+                var token = jwtService.GenerateToken(user, shelterId);
 
-                
-                return Ok(user.ToLoginResponseDto(token));
+                return Ok(new { Token = token });
             }
-            catch (UnauthorizedAccessException ex)
+            catch (Exception ex)
             {
-                // Renvoie un 401 si le mot de passe ou l'email est faux
-                return Unauthorized(new { message = ex.Message });
-            }
-            catch (InvalidOperationException ex)
-            {
-                //  Renvoie un 400 avec le message personnalisé pour le shelter non validé !
                 return BadRequest(new { message = ex.Message });
             }
         }

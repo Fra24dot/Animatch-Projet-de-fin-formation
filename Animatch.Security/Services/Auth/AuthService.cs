@@ -16,40 +16,38 @@ namespace Animatch.Security.Services.Auth
     IJwtService jwtService,
     IPasswordHacherService passwordHacher) : IAuthService
     {
-        public async Task<User> LoginAsync(string email, string password)
+        public async Task<(User User, Guid? ShelterId)> LoginAsync(string email, string password)
         {
             var user = await userRepository.GetByEmailAsync(email);
 
-            // Vérification des identifiants
             if (user == null || !passwordHacher.VerifyPassword(password, user.Password))
                 throw new UnauthorizedAccessException("Identifiants invalides.");
 
-            // Si c'est un compte de type "Shelter"
-            // StringComparison pour éviter de dupliquer la condition avec "Shelter" || "shelter"
+            Guid? shelterId = null; // 🌟 On prépare la variable pour stocker l'ID
+
             if (string.Equals(user.AccountType.ToString(), "Shelter", StringComparison.OrdinalIgnoreCase))
             {
                 var shelter = await shelterRepository.GetByEmailAsync(email);
 
                 if (shelter != null)
                 {
-                    // Le refuge a été rejeté par l'admin
                     if (shelter.ShelterStatus == ShelterStatus.Rejected)
                     {
                         throw new InvalidOperationException("Votre demande d'inscription a été rejetée par l'administrateur.");
                     }
 
-                    // Le refuge est toujours en attente (Pending)
                     if (shelter.ShelterStatus == ShelterStatus.Pending)
                     {
                         throw new InvalidOperationException("Votre compte refuge est en attente de validation par un administrateur. Patience ! 🐾");
                     }
 
-                    
+                    // 🌟 Si le refuge est validé, on récupère son vrai ID !
+                    shelterId = shelter.Id;
                 }
             }
 
-            
-            return user;
+            // 🌟 On retourne les deux informations
+            return (user, shelterId);
         }
 
         public async Task<User> RegisterUserAsync(string firstName, string lastName, string email, 

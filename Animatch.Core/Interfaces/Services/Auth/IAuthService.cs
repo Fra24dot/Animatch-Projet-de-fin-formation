@@ -9,7 +9,7 @@ namespace Animatch.Core.Interfaces.Services.Auth
     public interface IAuthService
     {
         
-        Task<User> LoginAsync(string email, string password);
+        Task<(User User, Guid? ShelterId)> LoginAsync(string email, string password);
 
         Task<User> RegisterUserAsync(string firstName, string lastName, string email, string password, UserGender gender, DateTime birthDate);
 
