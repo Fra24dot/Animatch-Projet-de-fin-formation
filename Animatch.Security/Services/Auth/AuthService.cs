@@ -16,6 +16,22 @@ namespace Animatch.Security.Services.Auth
     IJwtService jwtService,
     IPasswordHacherService passwordHacher) : IAuthService
     {
+        /// <summary>
+        /// Authenticates a user using their email address and password.
+        /// For shelter accounts, verifies the shelter approval status before allowing access.
+        /// </summary>
+        /// <param name="email">The user's email address.</param>
+        /// <param name="password">The user's plain text password.</param>
+        /// <returns>
+        /// A tuple containing the authenticated user and the associated shelter identifier,
+        /// if the account belongs to a shelter.
+        /// </returns>
+        /// <exception cref="UnauthorizedAccessException">
+        /// Thrown when the provided credentials are invalid.
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown when a shelter account is pending approval or has been rejected.
+        /// </exception>
         public async Task<(User User, Guid? ShelterId)> LoginAsync(string email, string password)
         {
             var user = await userRepository.GetByEmailAsync(email);
@@ -23,7 +39,7 @@ namespace Animatch.Security.Services.Auth
             if (user == null || !passwordHacher.VerifyPassword(password, user.Password))
                 throw new UnauthorizedAccessException("Identifiants invalides.");
 
-            Guid? shelterId = null; // 🌟 On prépare la variable pour stocker l'ID
+            Guid? shelterId = null; 
 
             if (string.Equals(user.AccountType.ToString(), "Shelter", StringComparison.OrdinalIgnoreCase))
             {
@@ -41,22 +57,37 @@ namespace Animatch.Security.Services.Auth
                         throw new InvalidOperationException("Votre compte refuge est en attente de validation par un administrateur. Patience ! 🐾");
                     }
 
-                    // 🌟 Si le refuge est validé, on récupère son vrai ID !
+                    
                     shelterId = shelter.Id;
                 }
             }
 
-            // 🌟 On retourne les deux informations
+            
             return (user, shelterId);
         }
 
+        /// <summary>
+        /// Registers a new user account and creates the corresponding user profile.
+        /// </summary>
+        /// <param name="firstName">The user's first name.</param>
+        /// <param name="lastName">The user's last name.</param>
+        /// <param name="email">The user's email address.</param>
+        /// <param name="password">The user's password.</param>
+        /// <param name="gender">The user's gender.</param>
+        /// <param name="birthDate">The user's date of birth.</param>
+        /// <returns>
+        /// The newly created user.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown when the user is under 18 years old or when the email address is already in use.
+        /// </exception>
         public async Task<User> RegisterUserAsync(string firstName, string lastName, string email, 
             string password, UserGender gender, DateTime birthDate)
         {
             var today = DateTime.UtcNow.Date;
             var age = today.Year - birthDate.Year;
 
-            // Si l'anniversaire n'est pas encore passé cette année on retire un an
+            
             if (birthDate.Date > today.AddYears(-age))
             {
                 age--;
@@ -86,6 +117,27 @@ namespace Animatch.Security.Services.Auth
 
             return await userRepository.CreateAsync(user);
         }
+
+        /// <summary>
+        /// Registers a new shelter account and creates the associated login credentials.
+        /// The shelter is initially created with a pending status and must be approved
+        /// by an administrator before gaining access.
+        /// </summary>
+        /// <param name="name">The shelter name.</param>
+        /// <param name="email">The shelter email address.</param>
+        /// <param name="password">The shelter password.</param>
+        /// <param name="companyNumber">The shelter company registration number.</param>
+        /// <param name="phoneNumber">The shelter phone number.</param>
+        /// <param name="address">The shelter address.</param>
+        /// <param name="city">The shelter city.</param>
+        /// <param name="postalCode">The shelter postal code.</param>
+        /// <param name="creationYear">The year the shelter was established.</param>
+        /// <returns>
+        /// The newly created shelter.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown when the email address is already in use.
+        /// </exception>
 
         public async Task<Shelter> RegisterShelterAsync(string name, string email, string password, 
             string companyNumber, string phoneNumber, string address, string city, string postalCode, int creationYear)

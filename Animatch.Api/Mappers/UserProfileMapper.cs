@@ -13,7 +13,7 @@ namespace Animatch.Api.Mappers
             {
                 UserId = userId,
                 City = request.City,
-                HousingType = (HousingType)request.HousingType, // Cast du int vers l'Enum
+                HousingType = (HousingType)request.HousingType, 
                 PeopleCount = request.PeopleCount,
                 HasChildren = request.HasChildren,
                 PetsAllowed = request.PetsAllowed
@@ -27,7 +27,7 @@ namespace Animatch.Api.Mappers
                 UserId = userId,
                 HasAnimals = request.HasAnimals,
                 AnimalsCount = request.AnimalsCount,
-                AnimalType = (AnimalType)request.AnimalType, // Cast du int vers l'Enum
+                AnimalType = (AnimalType)request.AnimalType,
                 AlreadyAdopted = request.AlreadyAdopted,
                 AdoptionPermit = request.AdoptionPermit
             };
@@ -38,7 +38,7 @@ namespace Animatch.Api.Mappers
             return new UserLifestyle
             {
                 UserId = userId,
-                JobType = (JobType)request.JobType, // Cast du int vers l'Enum
+                JobType = (JobType)request.JobType, 
                 RemoteWork = request.RemoteWork,
                 DogAloneHours = request.DogAloneHours,
                 ActiveLifestyle = request.ActiveLifestyle,

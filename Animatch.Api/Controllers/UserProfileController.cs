@@ -26,10 +26,10 @@ namespace Animatch.Api.Controllers
             var (family, experience, lifestyle) = await _profileService.GetFullProfileEntitiesAsync(userId);
 
             // Récupération de l'utilisateur via ton Repository existant
-            var user = await _userRepository.GetByIdAsync(userId); // Adapte le nom de ta méthode (ex: FindByIdAsync)
+            var user = await _userRepository.GetByIdAsync(userId); 
             if (user == null) return NotFound(new { message = "Utilisateur introuvable." });
 
-            // Transformation en ResponseDto via le mapper
+            
             var responseDto = UserProfileMapper.ToResponse(userId, user.AccountCompleted, family, experience, lifestyle);
 
             return Ok(responseDto);

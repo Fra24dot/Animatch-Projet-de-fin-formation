@@ -12,16 +12,33 @@ namespace Animatch.Core.Services.Data
 {
     public class ShelterDogService(IDogRepository _dogRepository, IAzureBlobService _blobService) : IShelterDogService
     {
+
+        /// <summary>
+        /// Adds a new dog to a shelter, uploads its image, and associates
+        /// its personality traits, special needs, compatibilities,
+        /// and medical history records.
+        /// </summary>
+        /// <param name="dog">The dog to add.</param>
+        /// <param name="imageBlob">The image content.</param>
+        /// <param name="fileName">The image file name.</param>
+        /// <param name="personalityIds">Selected personality identifiers.</param>
+        /// <param name="specialNeedsIds">Selected special needs identifiers.</param>
+        /// <param name="compatibilityIds">Selected compatibility identifiers.</param>
+        /// <param name="medicalHistoryIds">Selected medical history identifiers.</param>
+        /// <returns>The created dog.</returns>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown when a matching non-adopted dog already exists in the shelter.
+        /// </exception>
         public async Task<Dog> AddDogAsync(
-           Dog dog,
-    byte[]? imageBlob,
-    string? fileName,
-    List<int> personalityIds,
-    List<int> specialNeedsIds,
-    List<int> compatibilityIds,
-    List<int> medicalHistoryIds)
+            Dog dog,
+            byte[]? imageBlob,
+            string? fileName,
+            List<int> personalityIds,
+            List<int> specialNeedsIds,
+            List<int> compatibilityIds,
+            List<int> medicalHistoryIds)
         {
-            // 1. Vérification d'existence (Inchangé)
+            
             var dogExisteDeja = await _dogRepository.ExistsAsync(d =>
                 d.ShelterId == dog.ShelterId &&
                 d.Name.ToLower() == dog.Name.ToLower() &&
@@ -35,12 +52,12 @@ namespace Animatch.Core.Services.Data
                 throw new InvalidOperationException($"Un chien nommé '{dog.Name}' avec la même race existe déjà dans votre refuge.");
             }
 
-            // 2. Initialisation des données de base
+            
             dog.Id = Guid.NewGuid();
             dog.Status = DogStatus.Available;
             dog.CreatedAt = DateTime.UtcNow;
 
-            // 3. Gestion de l'unique Média (On le fait avant pour l'ajouter à l'arbre de l'entité)
+            
             dog.DogMedias = new List<DogMedia>();
             if (imageBlob != null && imageBlob.Length > 0 && !string.IsNullOrEmpty(fileName))
             {
@@ -52,18 +69,16 @@ namespace Animatch.Core.Services.Data
                 });
             }
 
-            // 🌟 ÉTAPE CRUCIALE 1 : On ajoute et on persiste le Chien et son Média d'abord !
-            // Cela garantit que l'ID du chien existe physiquement dans SQL Server.
+            
             await _dogRepository.AddAsync(dog);
-            // Note : Si ton `_dogRepository.AddAsync` ne fait pas de `_context.SaveChangesAsync()`, 
-            // assure-toi d'en appeler un ici ou via ton Unit of Work.
+            
 
-            // 🌟 ÉTAPE CRUCIALE 2 : On ajoute les entités de liaison avec l'ID du chien désormais validé
+            
             if (personalityIds != null && personalityIds.Any())
             {
                 dog.DogPersonalities = personalityIds.Select(id => new DogPersonality
                 {
-                    DogId = dog.Id, // On lie explicitement l'ID
+                    DogId = dog.Id, 
                     PersonalityId = id
                 }).ToList();
             }
@@ -95,9 +110,9 @@ namespace Animatch.Core.Services.Data
                 }).ToList();
             }
 
-            // 🌟 ÉTAPE CRUCIALE 3 : On met à jour l'entité pour sauvegarder les listes intermédiaires
+            
             await _dogRepository.UpdateAsync(dog);
-            // Idem ici, un SaveChangesAsync doit être appliqué pour valider les tables intermédiaires.
+            
 
             return dog;
         }
