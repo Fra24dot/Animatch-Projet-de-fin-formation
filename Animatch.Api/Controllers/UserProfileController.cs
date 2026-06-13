@@ -58,30 +58,32 @@ namespace Animatch.Api.Controllers
         public async Task<IActionResult> GetMyPreferences()
         {
             var userIdClaim = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value ?? User.FindFirst("sub")?.Value;
-            if (userIdClaim == null || !Guid.TryParse(userIdClaim, out Guid userId))
-            {
-                return Unauthorized(new { message = "Session invalide." });
-            }
+            if (!Guid.TryParse(userIdClaim, out Guid userId)) return Unauthorized(new { message = "Session invalide." });
 
             try
             {
-                
                 var preferencesModel = await preferencesRepository.GetPreferencesByUserIdAsync(userId);
 
+                
                 if (preferencesModel == null)
                 {
-                   
-                    return Ok(new UserPreferencesResponseDto());
+                    return Ok(new UserPreferencesResponseDto
+                    {
+                        MaxDistance = 50,
+                        DogSizeIds = new(),
+                        DogGenderIds = new(),
+                        DogAgeIds = new(),
+                        EnergyLevelIds = new(),
+                        DogRaceIds = new()
+                    });
                 }
 
-                
                 var responseDto = preferencesModel.ToResponseDto();
-
                 return Ok(responseDto);
             }
             catch (Exception ex)
             {
-                return BadRequest(new { message = "Erreur de récupération.", details = ex.Message });
+                return BadRequest(new { message = "Erreur de récupération des préférences.", details = ex.Message });
             }
 
         }
