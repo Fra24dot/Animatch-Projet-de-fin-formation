@@ -10,6 +10,12 @@ namespace Animatch.Infrastructure.Repositories.Data
 {
     public class ShelterRepository(AnimatchDbContext animatchDbContext) : IShelterRepository
     {
+        /// <summary>
+        /// Retrieves all shelters that are awaiting verification.
+        /// </summary>
+        /// <returns>
+        /// A collection of shelters that have not yet been verified.
+        /// </returns>
         public async Task<IEnumerable<Shelter>> GetPendingSheltersAsync()
         {
             
@@ -18,11 +24,25 @@ namespace Animatch.Infrastructure.Repositories.Data
                 .ToListAsync();
         }
 
+        /// <summary>
+        /// Retrieves a shelter by its unique identifier.
+        /// </summary>
+        /// <param name="id">The shelter identifier.</param>
+        /// <returns>
+        /// The matching shelter if found; otherwise, null.
+        /// </returns>
         public async Task<Shelter?> GetByIdAsync(Guid id)
         {
             return await animatchDbContext.Shelters.FindAsync(id);
         }
 
+        /// <summary>
+        /// Updates an existing shelter in the database.
+        /// </summary>
+        /// <param name="shelter">The shelter to update.</param>
+        /// <returns>
+        /// The updated shelter.
+        /// </returns>
         public async Task<Shelter> UpdateAsync(Shelter shelter)
         {
             animatchDbContext.Shelters.Update(shelter);
@@ -30,8 +50,14 @@ namespace Animatch.Infrastructure.Repositories.Data
             return shelter;
         }
 
-
-        public async Task<Shelter> CreateAsync(Shelter shelter)
+        /// <summary>
+        /// Creates a new shelter in the database.
+        /// </summary>
+        /// <param name="shelter">The shelter to create.</param>
+        /// <returns>
+        /// The created shelter.
+        /// </returns>
+        public async Task<Shelter?> CreateAsync(Shelter shelter)
         {
             if (shelter is null) return null;
             animatchDbContext.Shelters.Add(shelter);
@@ -39,12 +65,26 @@ namespace Animatch.Infrastructure.Repositories.Data
             return shelter;
         }
 
+        /// <summary>
+        /// Checks whether a shelter account already exists for the specified email address.
+        /// </summary>
+        /// <param name="email">The email address to check.</param>
+        /// <returns>
+        /// True if a shelter with the specified email exists; otherwise, false.
+        /// </returns>
         public async Task<bool> EmailExistsAsync(string email)
         {
             return await animatchDbContext.Shelters
             .AnyAsync(s => s.Email == email);
         }
 
+        /// <summary>
+        /// Retrieves a shelter by its email address.
+        /// </summary>
+        /// <param name="email">The shelter email address.</param>
+        /// <returns>
+        /// The matching shelter if found; otherwise, null.
+        /// </returns>
         public async Task<Shelter?> GetByEmailAsync(string email)
         {
             return await animatchDbContext.Shelters

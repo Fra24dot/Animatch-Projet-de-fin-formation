@@ -16,8 +16,6 @@ namespace Animatch.Api.Mappers
                 using var memoryStream = new MemoryStream();
                 await dto.MediaFile.CopyToAsync(memoryStream);
                 imageBlob = memoryStream.ToArray();
-
-                // On extrait le vrai nom du fichier de l'image (ex: "bobi.jpg")
                 fileName = dto.MediaFile.FileName;
             }
 
@@ -39,7 +37,7 @@ namespace Animatch.Api.Mappers
         
         public static DogDetailResponseDto ToDetailResponseDto(this Dog dog)
         {
-            // Récupère l'URL de l'unique média s'il existe
+            
             var uniqueImageUrl = dog.DogMedias?
                 .Where(dm => dm.Media != null)
                 .Select(dm => dm.Media.Url)

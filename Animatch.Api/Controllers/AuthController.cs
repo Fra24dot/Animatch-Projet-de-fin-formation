@@ -21,10 +21,9 @@ namespace Animatch.Api.Controllers
         {
             try
             {
-                // 🌟 CORRECTION : On utilise 'authService' (sans le '_')
                 var (user, shelterId) = await authService.LoginAsync(dto.Email, dto.Password);
 
-                // 🌟 CORRECTION : On utilise 'jwtService' (sans le '_')
+                
                 var token = jwtService.GenerateToken(user, shelterId);
 
                 return Ok(new { Token = token });

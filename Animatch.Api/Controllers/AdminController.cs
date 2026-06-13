@@ -21,12 +21,12 @@ namespace Animatch.Api.Controllers
             var accountType = User.FindFirst("accountType")?.Value;
             if (accountType != "Admin")
             {
-                return Forbid(); // Retourne un code 403 Interdit
+                return Forbid(); 
             }
 
             var shelters = await _adminService.GetPendingSheltersAsync();
 
-            // Mapping des entités vers le DTO de l'API
+            
             var response = shelters.Select(s => s.ToPendingResponseDto());
 
             return Ok(response);

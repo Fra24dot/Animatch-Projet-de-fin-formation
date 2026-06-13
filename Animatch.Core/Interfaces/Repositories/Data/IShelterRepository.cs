@@ -12,6 +12,6 @@ namespace Animatch.Core.Interfaces.Repositories.Data
         Task<Shelter> UpdateAsync(Shelter shelter);
         Task<Shelter?> GetByEmailAsync(string email);
         Task<bool> EmailExistsAsync(string email);
-        Task<Shelter> CreateAsync(Shelter shelter);
+        Task<Shelter?> CreateAsync(Shelter shelter);
     }
 }
