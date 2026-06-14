@@ -99,6 +99,8 @@ namespace Animatch.Infrastructure.Repositories.Data
             return await _context.Dogs.AnyAsync(predicate);
         }
 
+
+
         public async Task<List<(Dog Dog, double Distance)>> GetDogsByPreferencesAsync(Guid userId, UserPreferencesModel pref)
         {
 
