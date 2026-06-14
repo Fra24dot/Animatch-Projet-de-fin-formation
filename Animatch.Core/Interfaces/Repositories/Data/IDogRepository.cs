@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
+using Animatch.Core.Models;
 
 namespace Animatch.Core.Interfaces.Repositories.Data
 {
@@ -14,6 +15,7 @@ namespace Animatch.Core.Interfaces.Repositories.Data
         Task UpdateAsync(Dog dog);
         Task DeleteAsync(Guid id);
 
+        Task<List<(Dog Dog, double Distance)>> GetDogsByPreferencesAsync(Guid userId, UserPreferencesModel preferences);
         Task<bool> ExistsAsync(Expression<Func<Dog, bool>> predicate);
     }
 }

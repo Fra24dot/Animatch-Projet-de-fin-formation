@@ -21,25 +21,23 @@ namespace Animatch.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetProfile()
         {
+            
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (!Guid.TryParse(userIdClaim, out Guid userId)) return Unauthorized();
 
-            // Récupération des entités de profil depuis le service
             var (family, experience, lifestyle) = await _profileService.GetFullProfileEntitiesAsync(userId);
 
-            // Récupération de l'utilisateur via ton Repository existant
-            var user = await _userRepository.GetByIdAsync(userId); 
+            var user = await _userRepository.GetByIdAsync(userId);
             if (user == null) return NotFound(new { message = "Utilisateur introuvable." });
 
-            
             var responseDto = UserProfileMapper.ToResponse(userId, user.AccountCompleted, family, experience, lifestyle);
-
             return Ok(responseDto);
         }
 
         [HttpPut]
         public async Task<IActionResult> SaveProfile([FromBody] UpdateUserProfileRequest request)
         {
+            
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (!Guid.TryParse(userIdClaim, out Guid userId)) return Unauthorized();
 
@@ -47,16 +45,18 @@ namespace Animatch.Api.Controllers
             var experienceEntity = request.Experience.ToEntity(userId);
             var lifestyleEntity = request.Lifestyle.ToEntity(userId);
 
+           
             var isSaved = await _profileService.SaveFullProfileAsync(userId, familyEntity, experienceEntity, lifestyleEntity);
-
             if (!isSaved) return BadRequest(new { message = "Erreur de sauvegarde." });
 
-            return Ok(new { message = "Profil mis à jour avec succès !" });
+            
+            return Ok(new { message = "Profil mis à jour avec succès !", accountCompleted = true });
         }
 
         [HttpGet("my-preferences")]
         public async Task<IActionResult> GetMyPreferences()
         {
+            
             var userIdClaim = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value ?? User.FindFirst("sub")?.Value;
             if (!Guid.TryParse(userIdClaim, out Guid userId)) return Unauthorized(new { message = "Session invalide." });
 
@@ -64,7 +64,6 @@ namespace Animatch.Api.Controllers
             {
                 var preferencesModel = await preferencesRepository.GetPreferencesByUserIdAsync(userId);
 
-                
                 if (preferencesModel == null)
                 {
                     return Ok(new UserPreferencesResponseDto
@@ -85,18 +84,17 @@ namespace Animatch.Api.Controllers
             {
                 return BadRequest(new { message = "Erreur de récupération des préférences.", details = ex.Message });
             }
-
         }
 
-        [HttpPost("my-preferences")] 
+        [HttpPost("my-preferences")]
         public async Task<IActionResult> SaveMyPreferences([FromBody] SavePreferencesRequestDto dto)
         {
+            
             var userIdClaim = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value ?? User.FindFirst("sub")?.Value;
             if (!Guid.TryParse(userIdClaim, out Guid userId)) return Unauthorized(new { message = "Session invalide." });
 
             try
             {
-                
                 await preferencesRepository.SavePreferencesAsync(
                     userId,
                     dto.MaxDistance,

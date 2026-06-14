@@ -64,5 +64,11 @@ namespace Animatch.Infrastructure.Repositories.Data
             if (email is null) return null;
             return await animatchDbContext.Users.FirstOrDefaultAsync(e => e.Email == email);
         }
+
+        public async Task UpdateAsync(User user)
+        {
+            animatchDbContext.Users.Update(user);
+            await animatchDbContext.SaveChangesAsync();
+        }
     }
 }

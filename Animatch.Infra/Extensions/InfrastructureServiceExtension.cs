@@ -23,6 +23,11 @@ namespace Animatch.Infrastructure.Extensions
             services.AddScoped<IShelterRepository, ShelterRepository>();
             services.AddScoped<IUserProfileRepository, UserProfileRepository>();
             services.AddScoped<IDogRepository, DogRepository>();
+            services.AddScoped<IMatchRepository, MatchRepository>();
+            services.AddScoped<IUserPreferencesRepository, UserPreferencesRepository>();
+
+
+
 
         }
     }
