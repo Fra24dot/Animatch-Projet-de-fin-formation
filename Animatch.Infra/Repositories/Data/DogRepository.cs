@@ -1,5 +1,7 @@
 ﻿using Animatch.Core.Interfaces.Repositories.Data;
+using Animatch.Core.Models;
 using Animatch.Domain.Entities;
+using Animatch.Domain.Enums;
 using Animatch.Infrastructure.Database.Context;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -95,6 +97,90 @@ namespace Animatch.Infrastructure.Repositories.Data
         public async Task<bool> ExistsAsync(Expression<Func<Dog, bool>> predicate)
         {
             return await _context.Dogs.AnyAsync(predicate);
+        }
+
+
+
+        public async Task<List<(Dog Dog, double Distance)>> GetDogsByPreferencesAsync(Guid userId, UserPreferencesModel pref)
+        {
+
+            var user = await _context.Users
+            .FirstOrDefaultAsync(u => u.Id == userId);
+
+            if (user == null || user.Latitude == null || user.Longitude == null)
+                return new List<(Dog Dog, double Distance)>();
+
+
+            var excludedDogIds = await _context.Matches
+                .Where(m => m.UserId == userId)
+                .Select(m => m.DogId)
+                .ToListAsync();
+
+            
+            var query = _context.Dogs
+                .Include(d => d.Shelter)
+                .Include(d => d.DogMedias)
+                .Include(d => d.DogPersonalities)
+                .Include(d => d.DogCompatibilities)
+                .Include(d => d.DogSpecialNeeds)
+                .Include(d => d.DogMedicalHistories)
+                .Where(d => d.Status == DogStatus.Available)
+                
+                .Where(d => !excludedDogIds.Contains(d.Id))
+                .AsQueryable();
+
+            
+            if (pref.DogSizeIds != null && pref.DogSizeIds.Any())
+                query = query.Where(d => pref.DogSizeIds.Contains((int)d.Size));
+
+            if (pref.DogGenderIds != null && pref.DogGenderIds.Any())
+                query = query.Where(d => pref.DogGenderIds.Contains((int)d.Gender));
+
+            if (pref.DogAgeIds != null && pref.DogAgeIds.Any())
+                query = query.Where(d => pref.DogAgeIds.Contains((int)d.AgeRange));
+
+            if (pref.EnergyLevelIds != null && pref.EnergyLevelIds.Any())
+                query = query.Where(d => pref.EnergyLevelIds.Contains((int)d.EnergyLevelEnum));
+
+            if (pref.DogRaceIds != null && pref.DogRaceIds.Any())
+                query = query.Where(d => pref.DogRaceIds.Contains((int)d.Race));
+
+            var potentialDogs = await query.ToListAsync();
+            var filteredDogs = new List<(Dog Dog, double Distance)>(); 
+
+            foreach (var dog in potentialDogs)
+            {
+                if (dog.Shelter == null || dog.Shelter.Latitude == null || dog.Shelter.Longitude == null)
+                    continue;
+
+                double distance = CalculateDistance(
+                    user.Latitude.Value,
+                    user.Longitude.Value,
+                    dog.Shelter.Latitude.Value,
+                    dog.Shelter.Longitude.Value
+                );
+
+                if (distance <= pref.MaxDistance)
+                {
+                    
+                    filteredDogs.Add((dog, distance));
+                }
+            }
+
+            return filteredDogs;
+        }
+
+        
+        private double CalculateDistance(double lat1, double lon1, double lat2, double lon2)
+        {
+            var r = 6371; 
+            var dLat = (lat2 - lat1) * Math.PI / 180;
+            var dLon = (lon2 - lon1) * Math.PI / 180;
+            var a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
+                    Math.Cos(lat1 * Math.PI / 180) * Math.Cos(lat2 * Math.PI / 180) *
+                    Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
+            var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+            return r * c;
         }
     }
 }

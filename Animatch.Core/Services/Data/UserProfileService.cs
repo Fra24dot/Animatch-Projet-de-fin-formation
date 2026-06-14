@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Animatch.Core.Services.Data
 {
-    public class UserProfileService(IUserProfileRepository _profileRepository) : IUserProfileService
+    public class UserProfileService(IUserProfileRepository _profileRepository, IUserRepository userRepository) : IUserProfileService
     {
         /// <summary>
         /// Retrieves all profile-related information for a user,
@@ -41,14 +41,26 @@ namespace Animatch.Core.Services.Data
 
         public async Task<bool> SaveFullProfileAsync(Guid userId, UserFamilyCondition family, UserExperience experience, UserLifestyle lifestyle)
         {
-            
+
             family.UserId = userId;
             experience.UserId = userId;
             lifestyle.UserId = userId;
 
+            
             await _profileRepository.SaveFamilyConditionAsync(family);
             await _profileRepository.SaveExperienceAsync(experience);
             await _profileRepository.SaveLifestyleAsync(lifestyle);
+
+           
+            var user = await userRepository.GetByIdAsync(userId);
+            if (user != null)
+            {
+                user.AccountCompleted = true;
+                user.UpdatedAt = DateTime.UtcNow;
+
+               
+                await userRepository.UpdateAsync(user);
+            }
 
             return true;
         }

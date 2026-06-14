@@ -13,5 +13,6 @@ namespace Animatch.Core.Interfaces.Repositories.Data
         Task<bool> EmailExistsAsync(string email);
 
         Task<User> CreateAsync(User user);
+        Task UpdateAsync(User user);
     }
 }

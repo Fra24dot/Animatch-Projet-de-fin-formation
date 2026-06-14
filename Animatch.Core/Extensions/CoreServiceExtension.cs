@@ -31,6 +31,10 @@ namespace Animatch.Core.Extensions
             services.AddScoped<IAdminService, AdminService>();
             services.AddScoped<IShelterDogService, ShelterDogService>();
             services.AddScoped<IAzureBlobService, AzureBlobService>();
+            services.AddScoped<IFeedService, FeedService>();
+            services.AddScoped<IMatchService, MatchService>();
+            
+
         }
 
     }
