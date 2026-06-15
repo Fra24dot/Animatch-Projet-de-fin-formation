@@ -24,7 +24,7 @@ namespace Animatch.Domain.Entities
         public Guid ShelterId { get; set; }
 
         public Shelter Shelter { get; set; } = null!;
-        public ICollection<DogMedia> DogMedias { get; set; } = null!;
+        public ICollection<DogMedia> DogMedias { get; set; } = new List<DogMedia>();
         public ICollection<DogSpecialNeeds> DogSpecialNeeds { get; set; } = null!;
         public ICollection<DogPersonality> DogPersonalities { get; set; } = null!;
         public ICollection<DogCompatibility> DogCompatibilities { get; set; } = null!;

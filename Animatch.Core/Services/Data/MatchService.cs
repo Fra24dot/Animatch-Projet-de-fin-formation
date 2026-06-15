@@ -28,5 +28,34 @@ namespace Animatch.Core.Services.Data
             await matchRepository.AddAsync(newMatch);
             await matchRepository.SaveChangesAsync();
         }
+        public async Task<List<Match>> GetAdopterMatchesAsync(Guid userId)
+        {
+            return await matchRepository.GetMatchesByAdopterIdAsync(userId);
+        }
+
+        public async Task<List<Match>> GetShelterIncomingLikesAsync(Guid shelterId)
+        {
+            return await matchRepository.GetIncomingLikesByShelterIdAsync(shelterId);
+        }
+
+        public async Task<bool> UpdateMatchStatusAsync(Guid matchId, bool approve)
+        {
+            var match = await matchRepository.GetByIdAsync(matchId);
+            if (match == null) return false;
+
+            
+            match.Status = approve ? MatchStatus.Accepted : MatchStatus.Refused;
+
+            match.ShelterResponseAt = DateTime.UtcNow;
+
+            
+            if (approve)
+            {
+                match.ConversationEnabled = true;
+            }
+
+            await matchRepository.SaveChangesAsync();
+            return true;
+        }
     }
 }

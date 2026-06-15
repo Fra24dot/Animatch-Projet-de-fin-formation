@@ -56,20 +56,21 @@ namespace Animatch.Core.Services.Data
             dog.Id = Guid.NewGuid();
             dog.Status = DogStatus.Available;
             dog.CreatedAt = DateTime.UtcNow;
+            dog.DogMedias = new List<DogMedia>(); 
 
             
-            dog.DogMedias = new List<DogMedia>();
             if (imageBlob != null && imageBlob.Length > 0 && !string.IsNullOrEmpty(fileName))
             {
                 string azureImageUrl = await _blobService.UploadImageAsync(imageBlob, fileName);
 
+                
                 dog.DogMedias.Add(new DogMedia
                 {
                     Media = new Media { Url = azureImageUrl }
                 });
             }
 
-            
+
             await _dogRepository.AddAsync(dog);
             
 
