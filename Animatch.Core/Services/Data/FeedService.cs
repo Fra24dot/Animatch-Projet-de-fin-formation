@@ -11,7 +11,8 @@ namespace Animatch.Core.Services.Data
     public class FeedService(
     IDogRepository dogRepository,
     IUserPreferencesRepository prefRepository,
-    IUserRepository userRepository) : IFeedService
+    IUserRepository userRepository,
+    IUserProfileRepository profileRepository) : IFeedService
     {
         public async Task<List<DogFeedModel>> GetUserFeedAsync(Guid userId)
         {
@@ -19,24 +20,27 @@ namespace Animatch.Core.Services.Data
             if (user == null)
                 throw new InvalidOperationException("USER_NOT_FOUND");
 
-           
             if (!user.AccountCompleted)
             {
                 throw new InvalidOperationException("PROFILE_INCOMPLETE");
             }
 
-            if (user.Latitude == null || user.Longitude == null)
+            
+            var familyCondition = await profileRepository.GetFamilyConditionByUserIdAsync(userId);
+
+            if (familyCondition == null || familyCondition.Latitude == null || familyCondition.Longitude == null)
                 throw new InvalidOperationException("USER_COORDINATES_MISSING");
 
-            
             var preferences = await prefRepository.GetPreferencesByUserIdAsync(userId);
             if (preferences == null || preferences.MaxDistance == 0)
                 throw new InvalidOperationException("PREFERENCES_MISSING");
 
             
-            var matchingData = await dogRepository.GetDogsByPreferencesAsync(userId, preferences);
+            var matchingData = await dogRepository.GetDogsByPreferencesAsync(userId,
+            preferences,
+            familyCondition.Latitude.Value,
+            familyCondition.Longitude.Value);
 
-            
             return matchingData.Select(item =>
             {
                 var dog = item.Dog;
@@ -54,9 +58,7 @@ namespace Animatch.Core.Services.Data
                     EnergyLevel = dog.EnergyLevelEnum.ToString(),
                     ShelterName = dog.Shelter?.Name ?? "Refuge partenaire",
                     DistanceInKm = Math.Round(distance, 1),
-
                     MainImageUrl = dog.DogMedias?.FirstOrDefault(m => m.Media != null)?.Media?.Url,
-
                     Personalities = dog.DogPersonalities?.Where(p => p.Personality != null).Select(p => p.Personality.Name).ToList() ?? new(),
                     Compatibilities = dog.DogCompatibilities?.Where(c => c.Compatibility != null).Select(c => c.Compatibility.Name).ToList() ?? new(),
                     SpecialNeeds = dog.DogSpecialNeeds?.Where(s => s.SpecialNeeds != null).Select(s => s.SpecialNeeds.Name).ToList() ?? new(),
@@ -64,5 +66,6 @@ namespace Animatch.Core.Services.Data
                 };
             }).ToList();
         }
+     
     }
 }

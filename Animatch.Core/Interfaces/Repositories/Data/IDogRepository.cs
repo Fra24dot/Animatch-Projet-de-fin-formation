@@ -15,7 +15,8 @@ namespace Animatch.Core.Interfaces.Repositories.Data
         Task UpdateAsync(Dog dog);
         Task DeleteAsync(Guid id);
 
-        Task<List<(Dog Dog, double Distance)>> GetDogsByPreferencesAsync(Guid userId, UserPreferencesModel preferences);
+        Task<List<(Dog Dog, double Distance)>> GetDogsByPreferencesAsync(Guid userId, UserPreferencesModel pref,
+            double userLat, double userLng);
         Task<bool> ExistsAsync(Expression<Func<Dog, bool>> predicate);
     }
 }

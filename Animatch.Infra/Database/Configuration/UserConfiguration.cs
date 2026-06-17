@@ -50,8 +50,7 @@ namespace Animatch.Infrastructure.Database.Configuration
             builder.Property(u => u.UpdatedAt);
             builder.Property(u => u.DeletedAt);
 
-            builder.Property(u => u.Longitude);
-            builder.Property(u => u.Latitude);
+            
 
             builder.HasData(
                 new User
