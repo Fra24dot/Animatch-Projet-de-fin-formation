@@ -48,6 +48,8 @@ namespace Animatch.Infrastructure.Database.Configuration
                 .WithMany()
                 .HasForeignKey(d => d.ShelterId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+          
         }
     }
 }

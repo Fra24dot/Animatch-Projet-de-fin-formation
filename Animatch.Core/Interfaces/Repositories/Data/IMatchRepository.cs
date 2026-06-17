@@ -9,5 +9,8 @@ namespace Animatch.Core.Interfaces.Repositories.Data
     {
         Task AddAsync(Match match);
         Task SaveChangesAsync();
+        Task<List<Match>> GetMatchesByAdopterIdAsync(Guid userId);
+        Task<List<Match>> GetIncomingLikesByShelterIdAsync(Guid shelterId);
+        Task<Match?> GetByIdAsync(Guid matchId);
     }
 }

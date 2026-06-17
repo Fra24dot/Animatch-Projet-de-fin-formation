@@ -13,15 +13,17 @@ namespace Animatch.Infrastructure.Database.Configuration
         {
             builder.HasKey(dm => new { dm.DogId, dm.MediaId });
 
+            
             builder.HasOne(dm => dm.Dog)
                 .WithMany(d => d.DogMedias)
                 .HasForeignKey(dm => dm.DogId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            
             builder.HasOne(dm => dm.Media)
                 .WithMany()
                 .HasForeignKey(dm => dm.MediaId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Cascade); ;
         }
     }
 }
