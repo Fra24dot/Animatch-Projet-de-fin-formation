@@ -13,6 +13,8 @@ namespace Animatch.Api.Mappers
             {
                 UserId = userId,
                 City = request.City,
+                Latitude = request.Latitude,   
+                Longitude = request.Longitude,
                 HousingType = (HousingType)request.HousingType, 
                 PeopleCount = request.PeopleCount,
                 HasChildren = request.HasChildren,

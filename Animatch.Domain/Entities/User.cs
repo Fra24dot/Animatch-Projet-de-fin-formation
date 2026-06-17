@@ -17,8 +17,7 @@ namespace Animatch.Domain.Entities
         public UserGender? Gender { get; set; }
         public AccountType AccountType { get; set; }
         public bool AccountCompleted { get; set; }
-        public double? Longitude { get; set; }
-        public double? Latitude { get; set; }
+        
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public DateTime? DeletedAt { get; set; }

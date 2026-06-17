@@ -101,20 +101,14 @@ namespace Animatch.Infrastructure.Repositories.Data
 
 
 
-        public async Task<List<(Dog Dog, double Distance)>> GetDogsByPreferencesAsync(Guid userId, UserPreferencesModel pref)
+        public async Task<List<(Dog Dog, double Distance)>> GetDogsByPreferencesAsync(Guid userId, UserPreferencesModel pref,
+            double userLat, double userLng)
         {
 
-            var user = await _context.Users
-            .FirstOrDefaultAsync(u => u.Id == userId);
-
-            if (user == null || user.Latitude == null || user.Longitude == null)
-                return new List<(Dog Dog, double Distance)>();
-
-
             var excludedDogIds = await _context.Matches
-                .Where(m => m.UserId == userId)
-                .Select(m => m.DogId)
-                .ToListAsync();
+            .Where(m => m.UserId == userId)
+            .Select(m => m.DogId)
+            .ToListAsync();
 
             
             var query = _context.Dogs
@@ -125,7 +119,6 @@ namespace Animatch.Infrastructure.Repositories.Data
                 .Include(d => d.DogSpecialNeeds)
                 .Include(d => d.DogMedicalHistories)
                 .Where(d => d.Status == DogStatus.Available)
-                
                 .Where(d => !excludedDogIds.Contains(d.Id))
                 .AsQueryable();
 
@@ -146,23 +139,23 @@ namespace Animatch.Infrastructure.Repositories.Data
                 query = query.Where(d => pref.DogRaceIds.Contains((int)d.Race));
 
             var potentialDogs = await query.ToListAsync();
-            var filteredDogs = new List<(Dog Dog, double Distance)>(); 
+            var filteredDogs = new List<(Dog Dog, double Distance)>();
 
             foreach (var dog in potentialDogs)
             {
                 if (dog.Shelter == null || dog.Shelter.Latitude == null || dog.Shelter.Longitude == null)
                     continue;
 
+                
                 double distance = CalculateDistance(
-                    user.Latitude.Value,
-                    user.Longitude.Value,
+                    userLat,
+                    userLng,
                     dog.Shelter.Latitude.Value,
                     dog.Shelter.Longitude.Value
                 );
 
                 if (distance <= pref.MaxDistance)
                 {
-                    
                     filteredDogs.Add((dog, distance));
                 }
             }

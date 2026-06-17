@@ -9,6 +9,8 @@ namespace Animatch.Domain.Entities
     {
         public int Id { get; set; }
         public string City { get; set; } = null!;
+        public double? Longitude { get; set; }
+        public double? Latitude { get; set; }
         public HousingType HousingType { get; set; }
         public int PeopleCount { get; set; }
         public bool HasChildren { get; set; }

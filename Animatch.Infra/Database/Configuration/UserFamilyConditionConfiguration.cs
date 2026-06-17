@@ -17,6 +17,12 @@ namespace Animatch.Infrastructure.Database.Configuration
                 .IsRequired()
                 .HasMaxLength(100);
 
+            builder.Property(u => u.Longitude)
+                .IsRequired(false); 
+
+            builder.Property(u => u.Latitude)
+                .IsRequired(false);
+
             builder.Property(u => u.HousingType)
                 .IsRequired();
 
