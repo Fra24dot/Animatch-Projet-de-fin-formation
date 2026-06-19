@@ -2,6 +2,7 @@
 using Animatch.Core.Interfaces.Services.Data;
 using Animatch.Domain.Entities;
 using Animatch.Domain.Enums;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Text;
