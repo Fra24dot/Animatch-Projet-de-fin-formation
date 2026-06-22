@@ -60,12 +60,18 @@ namespace Animatch.Infrastructure.Repositories.Data
             }
             else
             {
-                animatchDbContext.Entry(existing).CurrentValues.SetValues(familyCondition);
+                existing.City = familyCondition.City;
+                existing.Longitude = familyCondition.Longitude;
+                existing.Latitude = familyCondition.Latitude;
+                existing.HousingType = familyCondition.HousingType;
+                existing.PeopleCount = familyCondition.PeopleCount;
+                existing.HasChildren = familyCondition.HasChildren;
+                existing.PetsAllowed = familyCondition.PetsAllowed;
+
                 existing.UpdatedAt = DateTime.UtcNow;
             }
 
             await animatchDbContext.SaveChangesAsync();
-            await CheckAndUpdateUserCompletionStatusAsync(familyCondition.UserId);
             return existing ?? familyCondition;
         }
 
@@ -86,7 +92,13 @@ namespace Animatch.Infrastructure.Repositories.Data
             }
             else
             {
-                animatchDbContext.Entry(existing).CurrentValues.SetValues(experience);
+               
+                existing.HasAnimals = experience.HasAnimals;
+                existing.AnimalsCount = experience.AnimalsCount;
+                existing.AnimalType = experience.AnimalType;
+                existing.AlreadyAdopted = experience.AlreadyAdopted;
+                existing.AdoptionPermit = experience.AdoptionPermit;
+
                 existing.UpdatedAt = DateTime.UtcNow;
             }
 
@@ -112,7 +124,12 @@ namespace Animatch.Infrastructure.Repositories.Data
             }
             else
             {
-                animatchDbContext.Entry(existing).CurrentValues.SetValues(lifestyle);
+                existing.JobType = lifestyle.JobType;
+                existing.RemoteWork = lifestyle.RemoteWork;
+                existing.DogAloneHours = lifestyle.DogAloneHours;
+                existing.ActiveLifestyle = lifestyle.ActiveLifestyle;
+                existing.FinanciallyStable = lifestyle.FinanciallyStable;
+
                 existing.UpdatedAt = DateTime.UtcNow;
             }
 

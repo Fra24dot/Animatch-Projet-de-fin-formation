@@ -18,7 +18,7 @@ namespace Animatch.Api.Controllers
     public class UserProfileController(IUserProfileService _profileService,
         IUserRepository _userRepository, IUserPreferencesRepository preferencesRepository) : ControllerBase
     {
-        [HttpGet]
+        [HttpGet("my-profile")]
         public async Task<IActionResult> GetProfile()
         {
             
@@ -56,9 +56,15 @@ namespace Animatch.Api.Controllers
         [HttpGet("my-preferences")]
         public async Task<IActionResult> GetMyPreferences()
         {
-            
-            var userIdClaim = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value ?? User.FindFirst("sub")?.Value;
-            if (!Guid.TryParse(userIdClaim, out Guid userId)) return Unauthorized(new { message = "Session invalide." });
+
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
+                       ?? User.FindFirst("sub")?.Value
+                       ?? User.FindFirst(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub)?.Value;
+
+            if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out Guid userId))
+            {
+                return Unauthorized(new { message = "Session invalide." });
+            }
 
             try
             {
@@ -89,9 +95,15 @@ namespace Animatch.Api.Controllers
         [HttpPost("my-preferences")]
         public async Task<IActionResult> SaveMyPreferences([FromBody] SavePreferencesRequestDto dto)
         {
-            
-            var userIdClaim = User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value ?? User.FindFirst("sub")?.Value;
-            if (!Guid.TryParse(userIdClaim, out Guid userId)) return Unauthorized(new { message = "Session invalide." });
+
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
+                      ?? User.FindFirst("sub")?.Value
+                      ?? User.FindFirst(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub)?.Value;
+
+            if (string.IsNullOrEmpty(userIdClaim) || !Guid.TryParse(userIdClaim, out Guid userId))
+            {
+                return Unauthorized(new { message = "Session invalide." });
+            }
 
             try
             {
@@ -111,6 +123,27 @@ namespace Animatch.Api.Controllers
             {
                 return BadRequest(new { message = "Erreur lors de la sauvegarde des préférences.", details = ex.Message });
             }
+        }
+        [HttpGet("onboarding-status")]
+        public async Task<IActionResult> GetOnboardingStatus()
+        {
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
+                              ?? User.FindFirst("sub")?.Value;
+
+            if (!Guid.TryParse(userIdClaim, out Guid userId)) return Unauthorized();
+
+            
+            var (family, experience, lifestyle) = await _profileService.GetFullProfileEntitiesAsync(userId);
+            bool hasProfile = family != null && experience != null && lifestyle != null;
+
+            var preferences = await preferencesRepository.GetPreferencesByUserIdAsync(userId);
+            bool hasPreferences = preferences != null;
+
+            return Ok(new
+            {
+                hasProfile = hasProfile,
+                hasPreferences = hasPreferences
+            });
         }
     }
 }

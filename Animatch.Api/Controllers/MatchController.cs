@@ -1,5 +1,6 @@
 ﻿using Animatch.Api.Dtos.Request;
 using Animatch.Api.Dtos.Response;
+using Animatch.Api.Mappers;
 using Animatch.Core.Interfaces.Services.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -13,6 +14,28 @@ namespace Animatch.Api.Controllers
     [ApiController]
     public class MatchController(IMatchService matchService) : ControllerBase
     {
+        [HttpPost("interaction")]
+        public async Task<IActionResult> PostInteraction([FromBody] DogInteractionRequestDto dto)
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? User.FindFirst("sub")?.Value;
+            if (!Guid.TryParse(userIdClaim, out Guid userId)) return Unauthorized();
+
+            try
+            {
+
+                var (dogId, isLike) = dto.ToCore();
+
+                await matchService.RegisterSwipeAsync(userId, dogId, isLike);
+
+                return Ok(new { message = isLike ? "Demande de match envoyée au refuge ! " : "Chien masqué avec succès." });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = "Impossible d'enregistrer l'interaction.", details = ex.Message });
+            }
+        }
+
+
         [HttpGet("my-likes")]
         public async Task<IActionResult> GetMyLikes()
         {
@@ -33,6 +56,7 @@ namespace Animatch.Api.Controllers
 
             return Ok(response);
         }
+
         [HttpGet("shelter-incoming")]
         public async Task<IActionResult> GetShelterIncoming()
         {

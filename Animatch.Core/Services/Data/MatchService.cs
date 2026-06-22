@@ -11,12 +11,13 @@ namespace Animatch.Core.Services.Data
 {
     public class MatchService(IMatchRepository matchRepository) : IMatchService
     {
-        public async Task RegisterSwipeAsync(Guid userId, Guid dogId, bool isLike)
+        public async Task<Guid> RegisterSwipeAsync(Guid userId, Guid dogId, bool isLike)
         {
-            
+            var matchId = Guid.NewGuid(); 
+
             var newMatch = new Match
             {
-                Id = Guid.NewGuid(),
+                Id = matchId,
                 UserId = userId,
                 DogId = dogId,
                 Status = isLike ? MatchStatus.Pending : MatchStatus.Refused,
@@ -25,9 +26,10 @@ namespace Animatch.Core.Services.Data
                 ConversationEnabled = false
             };
 
-            
             await matchRepository.AddAsync(newMatch);
             await matchRepository.SaveChangesAsync();
+
+            return matchId;  
         }
         public async Task<List<Match>> GetAdopterMatchesAsync(Guid userId)
         {

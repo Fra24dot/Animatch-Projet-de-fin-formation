@@ -110,7 +110,7 @@ namespace Animatch.Infrastructure.Repositories.Data
             .Select(m => m.DogId)
             .ToListAsync();
 
-            
+         
             var query = _context.Dogs
                 .Include(d => d.Shelter)
                 .Include(d => d.DogMedias)
@@ -144,19 +144,36 @@ namespace Animatch.Infrastructure.Repositories.Data
             foreach (var dog in potentialDogs)
             {
                 if (dog.Shelter == null || dog.Shelter.Latitude == null || dog.Shelter.Longitude == null)
+                {
+                    filteredDogs.Add((dog, 10.0)); 
                     continue;
+                }
 
-                
-                double distance = CalculateDistance(
-                    userLat,
-                    userLng,
-                    dog.Shelter.Latitude.Value,
-                    dog.Shelter.Longitude.Value
-                );
-
+                double distance = CalculateDistance(userLat, userLng, dog.Shelter.Latitude.Value, dog.Shelter.Longitude.Value);
                 if (distance <= pref.MaxDistance)
                 {
                     filteredDogs.Add((dog, distance));
+                }
+            }
+
+            
+            if (!filteredDogs.Any())
+            {
+                
+                var absoluteEmergencyDogs = await _context.Dogs
+                    .Include(d => d.Shelter)
+                    .Include(d => d.DogMedias)
+                    .Include(d => d.DogPersonalities)
+                    .Include(d => d.DogCompatibilities)
+                    .Include(d => d.DogSpecialNeeds)
+                    .Include(d => d.DogMedicalHistories)
+                    .Where(d => !excludedDogIds.Contains(d.Id))
+                    .Take(5)
+                    .ToListAsync();
+
+                foreach (var dog in absoluteEmergencyDogs)
+                {
+                    filteredDogs.Add((dog, 15.4)); 
                 }
             }
 

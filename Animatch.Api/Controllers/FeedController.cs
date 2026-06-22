@@ -47,24 +47,6 @@ namespace Animatch.Api.Controllers
             }
         }
 
-        [HttpPost("interaction")]
-        public async Task<IActionResult> PostInteraction([FromBody] DogInteractionRequestDto dto)
-        {
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? User.FindFirst("sub")?.Value;
-            if (!Guid.TryParse(userIdClaim, out Guid userId))
-                return Unauthorized();
-
-            try
-            {
-                
-                await matchService.RegisterSwipeAsync(userId, dto.DogId, dto.IsLike);
-
-                return Ok(new { message = dto.IsLike ? "Demande de match envoyée au refuge ! 🐾" : "Chien masqué avec succès." });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { message = "Impossible d'enregistrer l'interaction.", details = ex.Message });
-            }
-        }
+        
     }
 }

@@ -24,11 +24,11 @@ namespace Animatch.Infrastructure.Repositories.Data
         public async Task<List<Match>> GetMatchesByAdopterIdAsync(Guid userId)
         {
             return await context.Matches
-            .Include(m => m.Dog)
-                .ThenInclude(d => d.DogMedias)  
-                    .ThenInclude(dm => dm.Media) 
-            .Where(m => m.UserId == userId)
-            .OrderByDescending(m => m.CreatedAt)
+            .Include(m => m.Dog) 
+                .ThenInclude(d => d.DogMedias) 
+                    .ThenInclude(dm => dm.Media)
+            .Where(m => m.UserId == userId && m.Status == MatchStatus.Pending)
+            
             .ToListAsync();
         }
 
