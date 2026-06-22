@@ -101,7 +101,7 @@ namespace Animatch.Infrastructure.Repositories.Data
                 });
             }
 
-            
+
             foreach (var energyId in energyIds)
             {
                 await _context.UserDogEnergies.AddAsync(new UserDogEnergy

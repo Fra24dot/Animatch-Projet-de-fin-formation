@@ -1,6 +1,8 @@
 ﻿using Animatch.Core.Interfaces.Repositories.Data;
+using Animatch.Core.Interfaces.Repositories.Tools;
 using Animatch.Infrastructure.Database.Context;
 using Animatch.Infrastructure.Repositories.Data;
+using Animatch.Infrastructure.Repositories.Tools;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,6 +27,9 @@ namespace Animatch.Infrastructure.Extensions
             services.AddScoped<IDogRepository, DogRepository>();
             services.AddScoped<IMatchRepository, MatchRepository>();
             services.AddScoped<IUserPreferencesRepository, UserPreferencesRepository>();
+            services.AddScoped<IMessageRepository, MessageRepository>();
+
+
 
 
 

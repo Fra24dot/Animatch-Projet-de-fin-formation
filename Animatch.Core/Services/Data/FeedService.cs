@@ -16,6 +16,7 @@ namespace Animatch.Core.Services.Data
     {
         public async Task<List<DogFeedModel>> GetUserFeedAsync(Guid userId)
         {
+
             var user = await userRepository.GetByIdAsync(userId);
             if (user == null)
                 throw new InvalidOperationException("USER_NOT_FOUND");
@@ -25,9 +26,7 @@ namespace Animatch.Core.Services.Data
                 throw new InvalidOperationException("PROFILE_INCOMPLETE");
             }
 
-            
             var familyCondition = await profileRepository.GetFamilyConditionByUserIdAsync(userId);
-
             if (familyCondition == null || familyCondition.Latitude == null || familyCondition.Longitude == null)
                 throw new InvalidOperationException("USER_COORDINATES_MISSING");
 
@@ -35,14 +34,20 @@ namespace Animatch.Core.Services.Data
             if (preferences == null || preferences.MaxDistance == 0)
                 throw new InvalidOperationException("PREFERENCES_MISSING");
 
-            
-            var matchingData = await dogRepository.GetDogsByPreferencesAsync(userId,
-            preferences,
-            familyCondition.Latitude.Value,
-            familyCondition.Longitude.Value);
+           
+            var matchingData = await dogRepository.GetDogsByPreferencesAsync(
+                userId,
+                preferences,
+                familyCondition.Latitude.Value,
+                familyCondition.Longitude.Value);
 
-            return matchingData.Select(item =>
+           
+            var resultList = matchingData?.ToList() ?? new();
+
+            
+            return resultList.Select(item =>
             {
+                
                 var dog = item.Dog;
                 var distance = item.Distance;
 
@@ -51,7 +56,7 @@ namespace Animatch.Core.Services.Data
                     Id = dog.Id,
                     Name = dog.Name,
                     Description = dog.Description,
-                    RaceName = dog.Race.ToString(),
+                    RaceName = dog.Race != null ? dog.Race.ToString() : "Race inconnue",
                     Gender = dog.Gender.ToString(),
                     AgeRange = dog.AgeRange.ToString(),
                     Size = dog.Size.ToString(),
@@ -66,6 +71,6 @@ namespace Animatch.Core.Services.Data
                 };
             }).ToList();
         }
-     
+
     }
 }
